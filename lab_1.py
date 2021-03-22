@@ -39,26 +39,27 @@ def cube(table):
 def print_table (table,cord_1,cord_2): #print table with *
     number_col=" "
     for number in range (len(table[0])):
-        number_col =number_col+str(number+1) +'  '
+        number_col =number_col+'%2s  '% str(number+1)
     print(number_col)
     print()
+    n=65
     for x in range(len(table)):
-        printin=" "
-        
+        printin=str(chr(n)+' ')
         for i in range(len(table[x])):
             val=0
             if table[cord_1[0]][cord_1[1]]== ' ' or table[cord_2[0]][cord_2[1]]== ' ':
-                printin=printin+' '
+                printin=printin+'  '
             else:
                 if x+1==cord_1[0] and i+1==cord_1[1]:
-                    printin=printin+ str(table[x][i])+' '
+                    printin=printin+'%2s '%str(table[x][i])
                     val=1
                 if x+1==cord_2[0] and i+1==cord_2[1]:
-                    printin=printin + str(table[x][i])+' '
+                    printin=printin +'%2s '% str(table[x][i])
                     val=1
 
                 if val==0:
-                    printin=printin + ('*  ')
+                    printin=printin + (' *  ')
+            n+=1
         print(printin)
     return()
 
@@ -67,7 +68,16 @@ def pairs(cord_1,cord_2,table): #check winner pairs
         return True
     return False 
 
+def card():
+    print('enter a coordinate ')
+    cord=input(' ')
+    return cord 
 
+def convert(card):
+    t=card[0]
+    n_t=ord(t)
+    t=n-t -64
+    return (n_t,card[1])
 
 def dimensions(table,cord):
     x=len(table)
@@ -85,8 +95,9 @@ def print_player(score_1 , score_2 , turn): #print the points of the players and
 
 
 
-print_player(23,56,2)
 
+score_1=0
+score_2=0
 n_cards= int(input ('enter a number of cards '))
 print_player(23,56,2)
 table=create_table(n_cards)
