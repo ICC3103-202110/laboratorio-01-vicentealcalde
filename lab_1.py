@@ -22,7 +22,6 @@ def create_table (n_cards):
         table.append(comp)
     return table
 
-
 def cube(table):
     number=len(table)
     if number==2:
@@ -37,13 +36,6 @@ def cube(table):
                 return (x,int(number/x))
     return
 
-
-
-
-
-
-
-
 def print_table (table,cord_1,cord_2): #print table with *
     number_col=" "
     for number in range (len(table[0])):
@@ -55,14 +47,18 @@ def print_table (table,cord_1,cord_2): #print table with *
         
         for i in range(len(table[x])):
             val=0
-            if x+1==cord_1[0] and i+1==cord_1[1]:
-                printin=printin+ str(table[x][i])+' '
-                val=1
-            if x+1==cord_2[0] and i+1==cord_2[1]:
-                printin=printin + str(table[x][i])+' '
-                val=1
-            if val==0:
-                printin=printin + ('*  ')
+            if table[cord_1[0]][cord_1[1]]== ' ' or table[cord_2[0]][cord_2[1]]== ' ':
+                printin=printin+' '
+            else:
+                if x+1==cord_1[0] and i+1==cord_1[1]:
+                    printin=printin+ str(table[x][i])+' '
+                    val=1
+                if x+1==cord_2[0] and i+1==cord_2[1]:
+                    printin=printin + str(table[x][i])+' '
+                    val=1
+
+                if val==0:
+                    printin=printin + ('*  ')
         print(printin)
     return()
 
@@ -71,18 +67,27 @@ def pairs(cord_1,cord_2,table): #check winner pairs
         return True
     return False 
 
+
+
 def dimensions(table,cord):
     x=len(table)
     y=len(table[0])
     return
     
-
-
+def print_player(score_1 , score_2 , turn): #print the points of the players and whose turn it is
+    print(
+                "----------------------------------------------------------------------------------\n" \
+                 "player 1: "+str(score_1)+'                                                     player 2: '+str(score_2) +"\n"
+                 "                                   player "+ str(turn)+ " is playing \n"+
     
+                  "---------------------------------------------------------------------------------- \n"  )
+    return
 
 
 
+print_player(23,56,2)
 
 n_cards= int(input ('enter a number of cards '))
+print_player(23,56,2)
 table=create_table(n_cards)
 print_table(table,(1,1),(2,2))
