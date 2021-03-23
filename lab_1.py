@@ -48,7 +48,7 @@ def print_table (table,cord_1,cord_2): #print table with *
         for i in range(len(table[x])):
             val=0
             
-            if table[cord_1[0]-1][cord_1[1]-1]== ' ' or table[cord_2[0]-1][cord_2[1]-1]== ' ':
+            if table[x][i]==0:
                 printin=printin+'  '
             else:
                 if x+1==cord_1[0] and i+1==cord_1[1]:
@@ -65,19 +65,19 @@ def print_table (table,cord_1,cord_2): #print table with *
     return()
 
 def pairs(cord_1,cord_2,table): #check winner pairs
-    if table[cord_1[0]-1][cord_1[1]-1]==table[cord_2[0]-1][cord_2[1]-1]:
-        return True
+    if table [cord_1[0]-1][cord_1[1]-1]!=0:
+        if table[cord_1[0]-1][cord_1[1]-1]==table[cord_2[0]-1][cord_2[1]-1]:
+            return True
     return False 
 
 def discount_table(table,cord):
     x=cord[0]
     y=cord[1]
-    print(y)
-    table[x-1][y-1]='  '
+    table[x-1][y-1]=0
     return table 
 
 def card():
-    print('enter a coordinate ')
+    print('enter a coordinate (EX: A1)')
     cord=input(' ')
     return cord  #se tienes que aplicar los filtros aun 
 
@@ -85,12 +85,8 @@ def convert_coordinates(card):
     t=card[0]
     n_t=ord(t)
     t=n_t -64
-    return (t,int(card[1]))
+    return (t,int(card[1])) #convierte las coordenadas de tipo A1 a una tupla 
 
-def dimensions(table,cord):
-    x=len(table)
-    y=len(table[0])
-    return
     
 def print_player(score_1 , score_2 , turn): #print the points of the players and whose turn it is
     print(
@@ -101,57 +97,129 @@ def print_player(score_1 , score_2 , turn): #print the points of the players and
                   "---------------------------------------------------------------------------------- \n"  )
     return
 
+def cards(): #conjunto de todos los parametros de carta 
+    q=card()
+    cord=convert_coordinates(q)
+    return cord 
 
+def verification_po(table,cord):  #verification of the coordinates of use, so that it does not leave the matrix
+    if cord[0]<1 or cord[1]<1:
+        return False 
+    else:
+        if cord[0]<(len(table)+1) or cord[1]<(len(table[0])+1):
+            return True 
+        else:
+            return False 
+    return False 
+
+
+def shifts_functional_set(turn,score_1,score_2,table,stop,repit ): #esta funciuon toma todas las funciones anterioires, asi no tengo que escribirlo 2 veces 
+    while stop!=1:
+        if all_sum(table)==False:
+            if repit==0:
+                cord_1=(0,0)
+                cord_2=(0,0)
+                repit=1
+            print_player(score_1 , score_2 , turn)
+            print_table(table,cord_1,cord_2)
+            if repit==1: #para diferenciar de la primera carta y la segunda 
+                cord_1=cards()
+                verifi=verification_po(table,cord_1)
+
+                if verifi==True:
+                    print_player(score_1 , score_2 , turn)
+                    print_table(table,cord_1,cord_2)
+                    repit=2
+            if repit==2:
+                cord_2=cards()
+                verifi=verification_po(table,cord_2)
+                if verifi==True:
+                    print_player(score_1 , score_2 , turn)
+                    print_table(table,cord_1,cord_2)
+                    if pairs(cord_1,cord_2,table)==True:
+                        table=discount_table(table,cord_1)
+                        table=discount_table(table,cord_2)
+                        if turn==1:
+                           score_1+=1
+                        else:
+                            score_2+=1
+                        if all_sum(table)==True:
+                            return score_1,score_2,table
+                    else:
+                        stop=1
+                        return score_1,score_2,table
+                    repit=0
+        else:
+                stop=1
+                return score_1,score_2,table
+                print('hola como estas')
+    return score_1,score_2,table
+
+def all_sum(table):  #comprobar para acabar el juego 
+    for x in table :
+        row_suma=sum(x)
+        if row_suma>0:
+            return False
+    return True 
+
+def winner(score_1,score_2):
+    if score_1>score_2:
+        name='1'
+    elif score_2> score_1:
+        name='2'
+    else:
+        name='0'
+    if name!='0':
+       print(
+                "----------------------------------------------------------------------------------\n" 
+                "----------------------------------------------------------------------------------\n"
+                 "                          ＼(^o^)／  WINNER player "+name+" ＼(^o^)／                           \n"
+                 "                                 winner winner chicken dinner                          "
+                 "---------------------------------------------------------------------------------- \n"
+                 "---------------------------------------------------------------------------------- \n"  )
+    else:
+        print("there are no winners")
+    return
+
+    
 stop=0
 score_1=0
 score_2=0
-repit=0
-n_cards= int(input ('enter a number of cards ot press 0 to exit '))
+n_cards= int(input ('enter a number of cards or press 0 to exit '))
 if n_cards==0:
      stop=1
 repit=0
 table=create_table(n_cards)
-turn=1
 while stop!=1:
-
-    
-
-    if repit==0:
-        cord_1=(0,0)
-        cord_2=(0,0)
-        if turn==1:
-         turn=2
-        if turn==2:
-           turn=1
-    repit+=1
-      
-    
-    print_player(score_1 , score_2 , turn)
-    print_table(table,cord_1,cord_2)
-    q_card=card()
-    if repit==1:
-        cord_1=convert_coordinates(q_card)
-    if repit==2:
-        cord_2=convert_coordinates(q_card)
-        print_table(table,cord_1,cord_2)
-        if pairs(cord_1,cord_2,table)==True:
-            table=discount_table(table,cord_1)
-            table=discount_table(table,cord_2)
-            if turn==1:
-                score_1+=1
-            if turn==2:
-                score_2+=1
+    if all_sum(table)==False:
+        repit=0
+        turn=1
+        stop_1=0
+        score_1,score_2,table=shifts_functional_set(turn,score_1,score_2,table,stop_1,repit )
+        turn=2
+        if all_sum(table)==False:
+            score_1,score_2,table=shifts_functional_set(turn,score_1,score_2,table,stop_1,repit )
         else:
-            repit=0
-        cord_1=(0,0)
-        cord_2=(0,0)
+            stop=1
+    else:
+        stop=1
+winner(score_1,score_2)  
 
 
-    
 
-score_1=0
-score_2=0
-n_cards= int(input ('enter a number of cards '))
-print_player(23,56,2)
-table=create_table(n_cards)
-print_table(table,(1,1),(2,2))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
