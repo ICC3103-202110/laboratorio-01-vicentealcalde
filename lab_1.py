@@ -1,7 +1,7 @@
 import random 
 
 def create_table (n_cards): #creation of the game table, use of copy list to guarantee the pairs
-    cards_1=[random.randint(1,n_cards) for _ in range(n_cards)]
+    cards_1=list(range(1,n_cards+1))
     cards_2=cards_1[:]
     tabl= cards_1 + cards_2 #tabl = table 
     random.shuffle(tabl) #first disorder
@@ -176,7 +176,7 @@ def winner(score_1,score_2): #check the winner
                 "----------------------------------------------------------------------------------\n"
                  "                          ＼(^o^)／  WINNER player "+name+" ＼(^o^)／                           \n\n"
                  "                          score player 1: "+str(score_1)+"   score player 2: "+str(score_2)+"\n\n"
-                 "                                 winner winner chicken dinner                          \n"
+                 "                               winner winner chicken dinner                          \n"
                  "---------------------------------------------------------------------------------- \n"
                  "---------------------------------------------------------------------------------- \n"  )
     else:
@@ -214,19 +214,3 @@ winner(score_1,score_2)  # winner is verified and print message
 """
 Many of the variables are only for temporary use, this means that their use is only limited once, because they do not have very explanatory names.
 """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
