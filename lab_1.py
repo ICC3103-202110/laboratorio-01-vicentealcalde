@@ -88,7 +88,6 @@ def convert_coordinates(card): # converts the coordinates, for use in matrix
     n_t=ord(t)
     t=n_t -64
     return (t,int(card[1])) #converts coordinates of type A1 to a tuple
-
     
 def print_player(score_1 , score_2 , turn): #print the points of the players and whose turn it is
     print(
@@ -113,7 +112,6 @@ def verification_po(table,cord):  #verification of the coordinates of use, so th
         else:
             return False 
     return False 
-
 
 def shifts_functional_set(turn,score_1,score_2,table,stop,repit ): #this function takes all the previous functions, so I don't have to write it twice 
     while stop!=1:
